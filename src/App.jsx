@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import './styles/main.css';
 
@@ -35,6 +35,7 @@ const SkillCard = ({ category, items }) => (
 );
 
 const App = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sections = ["home", "about", "education", "skills", "projects", "contact"];
 
   const educationData = [
@@ -103,16 +104,55 @@ const App = () => {
       <header className="navbar">
         <div className="navbar-inner">
           <h1 className="logo">Bibek Paudel</h1>
-          <nav className="nav-links">
+          
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex nav-links">
             {sections.map((id) => (
-              <a key={id} href={`#${id}`} className="nav-link">
+              <a 
+                key={id} 
+                href={`#${id}`} 
+                className="nav-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
                 {id.charAt(0).toUpperCase() + id.slice(1)}
               </a>
             ))}
           </nav>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white w-full py-2 px-4 shadow-md">
+            {sections.map((id) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="block py-2 text-gray-800 hover:text-yellow-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {id.charAt(0).toUpperCase() + id.slice(1)}
+              </a>
+            ))}
+          </div>
+        )}
       </header>
 
+      {/* Rest of your existing code remains the same... */}
       <main className="main">
         {/* Home */}
         <section id="home" className="home-section">
@@ -236,9 +276,7 @@ const App = () => {
                 <p className="text-lg">Hakim Chowk, Bharatpur, Nepal</p>
               </div>
               
-              {/* Social Media Links with Icons */}
               <div className="flex justify-center space-x-6 pt-4">
-                {/* LinkedIn */}
                 <a 
                   href="https://www.linkedin.com/in/bibek-paudel-609876239" 
                   target="_blank" 
@@ -251,7 +289,6 @@ const App = () => {
                   </svg>
                 </a>
 
-                {/* Facebook */}
                 <a 
                   href="https://www.facebook.com/bibek.poudel.710" 
                   target="_blank" 
@@ -264,7 +301,6 @@ const App = () => {
                   </svg>
                 </a>
 
-                {/* Instagram */}
                 <a 
                   href="https://www.instagram.com/bibek.1337/?next=%2F" 
                   target="_blank" 
@@ -277,7 +313,6 @@ const App = () => {
                   </svg>
                 </a>
 
-                {/* GitHub */}
                 <a 
                   href="https://github.com/bibekdai" 
                   target="_blank" 
@@ -294,7 +329,6 @@ const App = () => {
           </div>
         </Section>
 
-        {/* Footer */}
         <footer className="footer">
           <p>© {new Date().getFullYear()} Bibek Paudel. All rights reserved.</p>
         </footer>

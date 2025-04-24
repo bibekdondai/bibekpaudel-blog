@@ -7,6 +7,9 @@
 #root {
   @apply max-w-[1280px] mx-auto p-8 text-center;
 }
+body {
+  @apply bg-gray-500; /* Light sky blue background */
+}
 
 /* Section wrapper */
 .section-wrapper {
@@ -26,9 +29,13 @@
   @apply text-3xl md:text-5xl font-bold text-center text-yellow-500 mb-16;
 }
 
+.section-paragraph {
+  @apply text-lg text-gray-700 leading-relaxed;
+}
+
 /* Navbar styles */
 .navbar {
-  @apply fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md shadow z-50;
+  @apply fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300;
 }
 
 .navbar-inner {
@@ -40,11 +47,24 @@
 }
 
 .nav-links {
-  @apply flex space-x-8 text-base font-semibold uppercase text-yellow-600;
+  @apply hidden md:flex space-x-8 text-base font-semibold uppercase text-yellow-600;
 }
 
 .nav-link {
-  @apply hover:text-yellow-800 transition;
+  @apply hover:text-yellow-800 transition-colors duration-200 relative;
+}
+
+.nav-link::after {
+  @apply content-[''] absolute bottom-0 left-0 w-0 h-0.5 bg-yellow-500 transition-all duration-300;
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  @apply md:hidden transition-all duration-300 ease-in-out overflow-hidden;
 }
 
 /* Home section */
@@ -69,8 +89,16 @@
   @apply mt-6 text-lg text-[#444];
 }
 
+.home-image {
+  @apply w-full md:w-1/2 flex justify-center;
+}
+
+.burger-img {
+  @apply w-64 h-64 md:w-80 md:h-80 object-cover;
+}
+
 .cta-button {
-  @apply inline-block mt-8 bg-yellow-500 text-white font-semibold py-3 px-6 rounded-full shadow-md hover:bg-yellow-400 transition;
+  @apply inline-block mt-8 bg-yellow-500 text-white font-semibold py-3 px-6 rounded-full shadow-md hover:bg-yellow-400 transition-all duration-300 transform hover:scale-105;
 }
 
 /* Cards */
@@ -79,30 +107,58 @@
 }
 
 .card {
-  @apply bg-yellow-100 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition;
+  @apply bg-yellow-100 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1;
 }
 
 .card-title {
   @apply text-lg font-bold text-yellow-600;
 }
 
+.card-sub {
+  @apply text-gray-600 mt-2;
+}
+
 /* Project cards */
 .project-card {
-  @apply rounded-xl p-6 bg-white text-center border border-yellow-100 hover:shadow-xl transition;
+  @apply rounded-xl p-6 bg-white text-center border border-yellow-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
 }
 
 .project-title {
   @apply text-xl font-bold text-yellow-500 mb-2;
 }
 
+.project-sub {
+  @apply text-gray-600;
+}
+
 /* Contact section */
+.contact-wrapper {
+  @apply max-w-6xl mx-auto;
+}
+
 .contact-icons {
-  @apply flex justify-center gap-4 text-xl text-yellow-500;
+  @apply flex justify-center gap-6 text-2xl text-yellow-500 mt-8;
 }
 
 /* Footer */
 .footer {
   @apply bg-white text-center py-8 text-gray-500 text-sm;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 /* Glitch effect */
@@ -140,7 +196,7 @@
   bottom: -2px;
 }
 
-/* Animations */
+/* Glitch animations */
 @keyframes glitch {
   0% { transform: none; }
   20% { transform: skew(-5deg); }
@@ -177,4 +233,55 @@
 @keyframes logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-inner {
+    @apply py-3;
+  }
+  
+  .mobile-menu {
+    @apply bg-white shadow-lg;
+  }
+  
+  .mobile-menu a {
+    @apply block py-3 px-4 text-gray-800 hover:bg-gray-100 hover:text-yellow-600 transition-colors;
+  }
+}
+
+/* Contact form elements */
+.contact-input {
+  @apply w-full px-4 py-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500;
+}
+
+.contact-textarea {
+  @apply w-full px-4 py-2 mb-4 border border-gray-300 rounded-md h-32 focus:outline-none focus:ring-2 focus:ring-yellow-500;
+}
+
+.contact-submit {
+  @apply bg-yellow-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-yellow-600 transition;
+}
+/* Facts Section Styles */
+.fact-box {
+  max-width: 500px;
+  margin: 0 auto 1rem;
+  border: 2px solid #f59e0b;
+  transition: all 0.3s ease;
+}
+
+.fact-box:hover {
+  transform: translateY(-2px);
+}
+
+/* Dialog Styles */
+.fact-dialog {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  .fact-box {
+    margin: 0 1rem 1rem;
+  }
 }

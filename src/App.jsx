@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './styles/main.css';
+import coffeeLeft from '/images/coffee2.png';
+import coffeeRight from '/images/coffee1.png';
 
 const Section = ({ id, title, children }) => (
   <section id={id} className="section-wrapper">
@@ -36,7 +38,33 @@ const SkillCard = ({ category, items }) => (
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showCoffeeCheers, setShowCoffeeCheers] = useState(false);
+  const [showFactDialog, setShowFactDialog] = useState(false);
+  const [disagreeCount, setDisagreeCount] = useState(0);
+  const [showThanks, setShowThanks] = useState(false);
+  
   const sections = ["home", "about", "education", "skills", "projects", "contact"];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const playCheersSound = () => {
+    const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-ice-cream-bell-ring-1931.mp3');
+    audio.play().catch(e => console.log("Audio play failed:", e));
+  };
+
+  const handleLogoClick = () => {
+    setShowCoffeeCheers(true);
+    playCheersSound();
+    setTimeout(() => setShowCoffeeCheers(false), 2000);
+  };
 
   const educationData = [
     {
@@ -98,13 +126,68 @@ const App = () => {
     { category: "IoT & Hardware", items: "ESP32, RFID, Raspberry Pi, Embedded Systems" }
   ];
 
+  const handleAgree = () => {
+    setShowFactDialog(false);
+    setShowThanks(true);
+    setTimeout(() => setShowThanks(false), 4000);
+  };
+
+  const disagreeTexts = [
+    "Think again...",
+    "Are you sure about that?",
+    "I think you might be mistaken",
+    "Your judgment is questionable",
+    "The council of developers disagrees",
+    "Error 418: I'm a teapot who thinks you're wrong",
+    "Your opinion has been noted (and discarded)",
+    "That's a weird way to spell 'Agree'",
+    "Your computer might have a virus causing this opinion",
+    "Have you tried turning your perspective off and on again?",
+    "This disagreement will be reported to the authorities",
+    "Your resistance only makes Bibek stronger",
+    "The algorithm has determined you're incorrect",
+    "This button is just for decoration, you know",
+    "Your click has been logged for quality assurance",
+    "Disagree harder, I dare you",
+    "This is getting awkward...",
+    "Your persistence is admirable but misguided",
+    "The universe agrees you should click Agree",
+    "This is not the button you're looking for 👋"
+  ];
+
+  const handleDisagree = () => {
+    setDisagreeCount(prev => prev + 1);
+  };
+
+  const getDisagreeText = () => {
+    return disagreeTexts[disagreeCount % disagreeTexts.length];
+  };
   return (
-    <div>
+    <div className="bg-gray-500 min-h-screen">
       {/* Navbar */}
-      <header className="navbar">
+      <header className={`navbar ${isScrolled ? 'bg-sky-700/90 shadow-md' : 'bg-sky-600/90'}`}>
         <div className="navbar-inner">
-          <h1 className="logo">Bibek Paudel</h1>
+          <h1 
+            className="logo cursor-pointer hover:scale-105 transition-transform"
+            onClick={handleLogoClick}
+          >
+            Bibek Paudel
+          </h1>
           
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex nav-links">
+            {sections.map((id) => (
+              <a 
+                key={id} 
+                href={`#${id}`} 
+                className="nav-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {id.charAt(0).toUpperCase() + id.slice(1)}
+              </a>
+            ))}
+          </nav>
+
           {/* Mobile Menu Button */}
           <button 
             className="md:hidden focus:outline-none"
@@ -119,20 +202,6 @@ const App = () => {
               )}
             </svg>
           </button>
-
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex nav-links">
-            {sections.map((id) => (
-              <a 
-                key={id} 
-                href={`#${id}`} 
-                className="nav-link"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {id.charAt(0).toUpperCase() + id.slice(1)}
-              </a>
-            ))}
-          </nav>
         </div>
 
         {/* Mobile Menu Dropdown */}
@@ -152,8 +221,51 @@ const App = () => {
         )}
       </header>
 
-      {/* Rest of your existing code remains the same... */}
-      <main className="main">
+      {/* Coffee Cheers Animation */}
+      <AnimatePresence>
+        {showCoffeeCheers && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
+          >
+            <motion.div
+              initial={{ y: 100, rotate: -30, x: -50 }}
+              animate={{ 
+                y: 0,
+                x: 0,
+                rotate: [0, -20, 20, -10, 10, 0],
+                transition: { 
+                  duration: 1.5,
+                  ease: "easeInOut"
+                } 
+              }}
+              className="w-32 h-32"
+            >
+              <img src={coffeeLeft} alt="Coffee cup" className="w-full h-full object-contain" />
+            </motion.div>
+            
+            <motion.div
+              initial={{ y: 100, rotate: 30, x: 50 }}
+              animate={{ 
+                y: 0,
+                x: 0,
+                rotate: [0, 20, -20, 10, -10, 0],
+                transition: { 
+                  duration: 1.5,
+                  ease: "easeInOut"
+                } 
+              }}
+              className="w-32 h-32 mx-8"
+            >
+              <img src={coffeeRight} alt="Coffee cup" className="w-full h-full object-contain" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <main className="main pt-16">
         {/* Home */}
         <section id="home" className="home-section">
           <motion.div
@@ -329,8 +441,74 @@ const App = () => {
           </div>
         </Section>
 
-        <footer className="footer">
+        <footer className="footer relative pb-12">
+          {/* New Facts Section */}
+          <div 
+            className="fact-box bg-white p-4 rounded-lg shadow-md mb-4 cursor-pointer hover:shadow-lg transition max-w-md mx-auto"
+            onClick={() => {
+              setShowFactDialog(true);
+              setDisagreeCount(0);
+            }}
+          >
+            <h3 className="text-lg font-semibold text-yellow-600">Did You Know?</h3>
+            <p className="text-gray-600">Click to reveal interesting facts about Bibek</p>
+          </div>
+
           <p>© {new Date().getFullYear()} Bibek Paudel. All rights reserved.</p>
+
+          {/* Fact Dialog */}
+          <AnimatePresence>
+            {showFactDialog && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+                onClick={() => setShowFactDialog(false)}
+              >
+                <motion.div 
+                  className="bg-white p-6 rounded-lg max-w-md w-full mx-4 shadow-xl"
+                  onClick={(e) => e.stopPropagation()}
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                >
+                   <h3 className="text-xl font-bold text-yellow-600 mb-4">Bibek is the best developer!</h3>
+                <p className={`mb-4 ${disagreeCount > 0 ? 'text-red-500 animate-pulse' : 'text-gray-700'}`}>
+                  {disagreeCount > 0 ? getDisagreeText() : "Do you agree with this statement?"}
+                </p>
+                <div className="flex justify-center space-x-4">
+                  <button 
+                    onClick={handleAgree}
+                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-md transition-colors duration-200"
+                  >
+                    Agree 
+                  </button>
+                  <button 
+                    onClick={handleDisagree}
+                    className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md transition-colors duration-200"
+                  >
+                    Disagree
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Thanks Message */}
+          <AnimatePresence>
+            {showThanks && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center"
+              >
+                <span className="mr-2">🎉</span>
+                <p>Thanks, I know that!</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </footer>
       </main>
     </div>

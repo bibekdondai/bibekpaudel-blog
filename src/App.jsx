@@ -92,10 +92,10 @@ const App = () => {
   const skillData = [
     { category: "Languages", items: "Java, Kotlin, Python, Dart, JavaScript" },
     { category: "Frameworks", items: "Flutter, Django, Firebase, Android Studio" },
-    { category: "Tools", items: "Figma, Canva, Git, Make.com, GitHub Actions" },
+    { category: "Tools", items: "Figma, Canva, Git, GitHub Actions" },
     { category: "Mobile Development", items: "Flutter, Android, Kotlin" },
     { category: "Specialties", items: "UI/UX Design, Networking, Ethical Hacking" },
-    { category: "IoT & Hardware", items: "ESP32, RFID, Embedded Systems" }
+    { category: "IoT & Hardware", items: "ESP32, RFID, Raspberry Pi, Embedded Systems" }
   ];
 
   return (
@@ -314,7 +314,7 @@ const App = () => {
                 </a>
 
                 <a 
-                  href="https://github.com/bibekdai" 
+                  href="https://github.com/bibekdondai" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="text-2xl hover:text-yellow-500 transition"

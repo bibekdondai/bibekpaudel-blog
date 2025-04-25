@@ -35,7 +35,7 @@ body {
 
 /* Navbar styles */
 .navbar {
-  @apply fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all duration-300;
+  @apply fixed top-0 left-0 w-full bg-[#faf2d6]  backdrop-blur-md shadow-sm z-50 transition-all duration-300;
 }
 
 .navbar-inner {
@@ -69,7 +69,7 @@ body {
 
 /* Home section */
 .home-section {
-  @apply min-h-screen pt-10 pb-20 px-6 bg-[#fff6dc] flex flex-col-reverse md:flex-row items-center justify-between gap-10 relative scroll-mt-24;
+  @apply min-h-screen pt-10 pb-20 px-6 bg-[#faf2d6] flex flex-col-reverse md:flex-row items-center justify-between gap-10 relative scroll-mt-24;
 }
 @media (min-width: 768px) {
   .home-section {
@@ -86,7 +86,7 @@ body {
 }
 
 .home-description {
-  @apply mt-6 text-lg text-[#444];
+  @apply mt-6 text-lg text-[#887439];
 }
 
 .home-image {
@@ -283,5 +283,6 @@ body {
 @media (max-width: 640px) {
   .fact-box {
     margin: 0 1rem 1rem;
+    
   }
 }
